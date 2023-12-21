@@ -35,14 +35,14 @@ public class Lesson {
   @NotBlank
   private String lessonName;
 
-  // @NotBlank
-  // @Column(nullable = false, unique = true, length = 20)
-  // @Size(max = 20)
-  // private String videokey;
+   @NotBlank
+   @Column(nullable = false, unique = true, length = 20)
+   @Size(max = 20)
+   private String videokey;
 
-  // @NotNull
-  // @ColumnDefault("0")
-  // private Integer lengthSeconds;
+   @NotNull
+   @ColumnDefault("0")
+   private Integer lengthSeconds;
 
   @NotNull
   @Column(nullable = false)

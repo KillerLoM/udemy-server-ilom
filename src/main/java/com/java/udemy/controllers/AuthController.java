@@ -1,8 +1,17 @@
 package com.java.udemy.controllers;
 
+import com.java.udemy.request.BaseRequest;
+import com.java.udemy.request.ValidateTokenRequest;
+import com.java.udemy.response.AuthTokenResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,5 +101,18 @@ public class AuthController {
         }
 
     }
-
+    @PostMapping("/validate-token")
+    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest token){
+        AuthTokenResponse response = new AuthTokenResponse();
+        if(jwtUtils.validateJwtToken(token.getToken())){
+            response.setMesseage("Token is valid");
+            response.setStatus(true);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        else{
+            response.setMesseage("Token is not valid");
+            response.setStatus(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -35,6 +35,7 @@ public class ProfileController {
       response.setUserDTO(userDTO);
       return response;
     } catch (Exception ex) {
+      System.out.println(ex.getMessage());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
   }

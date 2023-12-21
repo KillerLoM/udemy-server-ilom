@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path = "/courses", produces = MediaType.APPLICATION_JSON_VALUE)
+
 public class CourseController {
 
     @Autowired
