@@ -1,6 +1,6 @@
 frontend:
   root:
-    url: http://localhost:3000/ #TODO Replace with your frontend root URL / empty string
+    url: http://localhost:4200 #TODO Replace with your frontend root URL / empty string
 
 logging:
   level:

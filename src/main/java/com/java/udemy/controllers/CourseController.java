@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(path = "/courses", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/courses")
 
 public class CourseController {
 
@@ -64,6 +64,7 @@ public class CourseController {
     }
 
     @GetMapping(path = "/categories")
+    @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<List<CategoryRequest>> getCategoryListDistinct() {
         try {

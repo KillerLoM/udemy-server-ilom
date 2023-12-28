@@ -56,8 +56,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('ROLE_STUDENT', 'ROLE_ADMIN' ,'ROLE_TEACHER') DEFAULT 'ROLE_STUDENT'", nullable = false)
-    @JsonIgnore
-    private UserRole userRole = UserRole.ROLE_STUDENT;
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private UserRole userRole ;
 
     @CreationTimestamp
     @Column(nullable = false)

@@ -86,15 +86,15 @@ public class Lesson {
     this.course = course;
   }
 
-  // public Lesson(String lessonName, String video_url, String videokey, Integer
-  // lengthSeconds,
-  // Integer position, Course course) {
-  // this.lessonName = lessonName;
-  // this.video_url = video_url;
-  // this.lengthSeconds = lengthSeconds;
-  // this.position = position;
-  // this.videokey = videokey;
-  // this.course = course;
-  // }
+   public Lesson(String lessonName, String video_url, String videokey, Integer
+   lengthSeconds,
+   Integer position, Course course) {
+   this.lessonName = lessonName;
+   this.video_url = video_url;
+   this.lengthSeconds = lengthSeconds;
+   this.position = position;
+   this.videokey = videokey;
+   this.course = course;
+   }
 
 }

@@ -104,7 +104,7 @@ public class AuthController {
     @PostMapping("/validate-token")
     public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest token){
         AuthTokenResponse response = new AuthTokenResponse();
-        if(jwtUtils.validateJwtToken(token.getToken())){
+        if(jwtUtils.validateJwtToken(token.getToken()) && (jwtUtils.getUserNameFromJwtToken(token.getToken())!= null)){
             response.setMesseage("Token is valid");
             response.setStatus(true);
             return new ResponseEntity<>(response, HttpStatus.OK);
