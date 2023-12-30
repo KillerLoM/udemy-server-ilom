@@ -21,8 +21,9 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
     List<Course> getCoursesByCategoryEquals(@NotBlank String category);
 
     List<Course> getTop6CoursesByIsFeatured(boolean isFeatured);
-
+    List<Course> getCoursesByUserId(@Param("user_id") int id);
     Slice<Course> getCoursesByTitleContaining(@Param("title") String title, Pageable pageable);
+
 
     @Query(value = "SELECT new com.java.udemy.request.CategoryRequest(MAX(c.id), c.category) FROM Course c GROUP BY c.category")
     List<CategoryRequest> getAllDistinctCategories();
@@ -31,7 +32,8 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
 
     @Query(value = "SELECT c FROM Course c JOIN Wishlist w on w.course.id = c.id AND w.user.id = ?1 ORDER BY w.id DESC")
     Page<Course> getWishlistByUser(Integer userId, Pageable pageable);
-
+    @Query(value = "SELECT c FROM Course c WHERE c.user.id = c.id ORDER BY c.id DESC")
+    List<Course> getCoursesByUser(Integer userId);
     @Query(value = "SELECT c FROM Course c JOIN Cart r on r.course.id = c.id AND r.user.id = ?1 ORDER BY r.id DESC")
     Page<Course> getCartListByUser(Integer userId, Pageable pageable);
 

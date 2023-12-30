@@ -1,19 +1,24 @@
 package com.java.udemy.controllers;
 
+import com.java.udemy.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.java.udemy.exception.BadRequestException;
 import com.java.udemy.models.Course;
 import com.java.udemy.request.CategoryRequest;
+import com.java.udemy.request.CourseRequest;
 import com.java.udemy.response.GetCoursesByCategoryResponse;
 import com.java.udemy.response.SearchForCourseByTitleResponse;
 import com.java.udemy.service.abstractions.ICourseService;
+import com.java.udemy.service.abstractions.IUserService;
+
+import jakarta.servlet.http.HttpSession;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -29,10 +34,21 @@ public class CourseController {
     @Autowired
     private ICourseService courseService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping(path = "/id/{id}")
     public Optional<Course> getCourseById(@PathVariable @NotNull Integer id) {
         try {
             return courseService.findCourseById(id);
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
+    }
+    @GetMapping(path = "/teacher/{id}")
+    public List<Course> getCourseByUser(@PathVariable @NotNull Integer id) {
+        try {
+            return courseService.getCoursesByUser(id);
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage());
         }
@@ -89,5 +105,51 @@ public class CourseController {
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage());
         }
+    }
+
+    @Secured({ "ROLE_TEACHER", "ROLE_ADMIN" })
+    @PostMapping()
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Course createCourse(@RequestBody CourseRequest request, @NotNull HttpSession session) {
+        try {
+            Integer userId = userService.getSessionUserId(session);
+            System.out.println(userId);
+            return courseService.createCourse(request, userId);
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
+    }
+
+    @Secured({ "ROLE_TEACHER", "ROLE_ADMIN" })
+    @PutMapping( path = "/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<GenericResponse>  updateCourse(@RequestBody CourseRequest request, @PathVariable Integer id,
+            @NotNull HttpSession session) {
+
+        try {
+            Integer userId = userService.getSessionUserId(session);
+            courseService.updateCourse(request, userId, id);
+            GenericResponse response = new GenericResponse("OK", true);
+            return new ResponseEntity<>(response,HttpStatus.ACCEPTED );
+        } catch (Exception ex) {
+            GenericResponse response = new GenericResponse(ex.getMessage(), false);
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN );
+        }
+    }
+
+    @Secured({ "ROLE_TEACHER", "ROLE_ADMIN" })
+    @DeleteMapping( path = "/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<GenericResponse> deleteCourse(@PathVariable Integer id, @NotNull HttpSession session) {
+        try {
+            Integer userId = userService.getSessionUserId(session);
+            courseService.deleteCourse(id, userId);
+            GenericResponse response = new GenericResponse("OK", true);
+            return new ResponseEntity<>(response,HttpStatus.ACCEPTED );
+        } catch (Exception ex) {
+            GenericResponse response = new GenericResponse("OK", true);
+            return new ResponseEntity<>(response,HttpStatus.ACCEPTED );
+        }
+
     }
 }

@@ -9,7 +9,9 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -101,18 +103,28 @@ public class AuthController {
         }
 
     }
-    @PostMapping("/validate-token")
-    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest token){
-        AuthTokenResponse response = new AuthTokenResponse();
-        if(jwtUtils.validateJwtToken(token.getToken()) && (jwtUtils.getUserNameFromJwtToken(token.getToken())!= null)){
-            response.setMesseage("Token is valid");
-            response.setStatus(true);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    @PostMapping(path = "/logout")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<String> logout(HttpSession httpSession) {
+        try {
+            httpSession.invalidate();
+            return ResponseEntity.ok().body("Logout Successfully");
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage());
         }
-        else{
+    }
+    @PostMapping("/validate-token")
+    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest token) {
+        AuthTokenResponse response = new AuthTokenResponse();
+        if (jwtUtils.validateJwtToken(token.getToken()) && (jwtUtils.getUserNameFromJwtToken(token.getToken()) != null)) {
+            response.setMesseage("Token is valid");
+            response.setSuccess(true);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
             response.setMesseage("Token is not valid");
-            response.setStatus(false);
+            response.setSuccess(false);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
 }
