@@ -12,7 +12,9 @@ server:
     include-stacktrace: never
   port: 9000 # server port
   jwtSecret: eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4c
+
   jwtExpirationMs:  86400000 # minutes
+
 
   servlet:
     session:
@@ -26,8 +28,11 @@ server:
 
 spring:
   datasource:
+
     password: minhtam123
     url: jdbc:mysql://localhost:3306/udemy_dev?connectionTimeZone=UTC&useSSL=false
+
+
     username: root
   servlet:
     multipart:
@@ -50,3 +55,16 @@ spring:
       cleanup-cron: 0 0 * * * *
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
+  mail:
+    properties:
+      smtp:
+        starttls:
+          enable: true
+
+spring.mail:
+  host: smtp.gmail.com
+  port: 587
+  username: testtotonoreply@gmail.com
+  password: bepb ltkp fjzq lnpg
+  properties:
+    mail.smtp.starttls.enable: true
