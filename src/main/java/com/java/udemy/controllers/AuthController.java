@@ -111,11 +111,10 @@ public class AuthController {
         }
 
     }
-<<<<<<< HEAD
-=======
+
 
     @PostMapping(path = "/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> request, HttpSession httpSession) {
+    public ResponseEntity<GenericResponse> changePassword(@RequestBody Map<String, String> request, HttpSession httpSession) {
         try {
             String userEmail = (String) httpSession.getAttribute(UserService.USER_EMAIL);
 
@@ -139,14 +138,13 @@ public class AuthController {
             // Đăng nhập lại để cập nhật session với mật khẩu mới
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), newPassword);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            return ResponseEntity.ok().body("Password changed successfully");
+            GenericResponse response = new GenericResponse("Password has been changed successfully", true);
+            return ResponseEntity.ok().body(response);
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage());
         }
     }
 
->>>>>>> ed1ee1805c18d0ae45815d5863b54d0e47047a7e
     @PostMapping(path = "/logout")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<String> logout(HttpSession httpSession) {
@@ -157,7 +155,6 @@ public class AuthController {
             throw new BadRequestException(ex.getMessage());
         }
     }
-<<<<<<< HEAD
     @PostMapping("/validate-token")
     public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest token) {
         AuthTokenResponse response = new AuthTokenResponse();
@@ -171,8 +168,6 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
-
-=======
 
     @PostMapping(path = "/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
@@ -203,5 +198,4 @@ public class AuthController {
         message.setText("Your new password: " + resetPass);
         javaMailSender.send(message);
     }
->>>>>>> ed1ee1805c18d0ae45815d5863b54d0e47047a7e
 }
