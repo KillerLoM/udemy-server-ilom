@@ -1,5 +1,6 @@
 package com.java.udemy.controllers;
 
+import com.java.udemy.response.GetAllMyLessonsInEnrollmentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import com.java.udemy.service.abstractions.IUserService;
 import jakarta.servlet.http.HttpSession;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/lessons", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,7 +30,7 @@ public class LessonController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping(path = "/course/{id}")
+    @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetLessonsByCourseIdResponse getLessonsByCourseId(@PathVariable @NotNull Integer id,
             @RequestParam(defaultValue = "0") Integer page) {
@@ -43,23 +45,23 @@ public class LessonController {
 
     }
 
-    // @GetMapping(path = "/c/{courseId}/e/{enrollId}")
-    // @ResponseStatus(HttpStatus.OK)
-    // @Secured(value = "ROLE_STUDENT")
-    // public GetAllMyLessonsInEnrollmentResponse
-    // getAllMyLessonsInEnrollment(@PathVariable Integer courseId,
-    // @PathVariable Long enrollId) {
-    // try {
-    // List<Map<String, Object>> lessons =
-    // lessonService.getWatchStatusListByEnrollment(courseId, enrollId);
-    // GetAllMyLessonsInEnrollmentResponse response = new
-    // GetAllMyLessonsInEnrollmentResponse();
-    // response.setGetAllMyLessonsInEnrollment(lessons);
-    // return response;
-    // } catch (Exception ex) {
-    // throw new BadRequestException(ex.getMessage());
-    // }
-    // }
+//     @GetMapping(path = "/c/{courseId}/e/{enrollId}")
+//     @ResponseStatus(HttpStatus.OK)
+//     @Secured(value = "ROLE_STUDENT")
+//     public GetAllMyLessonsInEnrollmentResponse
+//     getAllMyLessonsInEnrollment(@PathVariable Integer courseId,
+//     @PathVariable Long enrollId) {
+//     try {
+//     List<Map<String, Object>> lessons =
+//     lessonService.getWatchStatusListByEnrollment(courseId, enrollId);
+//     GetAllMyLessonsInEnrollmentResponse response = new
+//     GetAllMyLessonsInEnrollmentResponse();
+//     response.setGetAllMyLessonsInEnrollment(lessons);
+//     return response;
+//     } catch (Exception ex) {
+//     throw new BadRequestException(ex.getMessage());
+//     }
+//     }
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)

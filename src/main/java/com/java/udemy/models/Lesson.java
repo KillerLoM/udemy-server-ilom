@@ -32,12 +32,6 @@ public class Lesson {
   @Column(nullable = false)
   @NotBlank
   private String lessonName;
-
-   @NotBlank
-   @Column(nullable = false, unique = true, length = 20)
-   @Size(max = 20)
-   private String videokey;
-
    @NotNull
    @ColumnDefault("0")
    private Integer lengthSeconds;
@@ -91,14 +85,13 @@ public class Lesson {
     this.user = user;
   }
 
-   public Lesson(String lessonName, String video_url, String videokey, Integer
+   public Lesson(String lessonName, String video_url, Integer
    lengthSeconds,
    Integer position, Course course) {
    this.lessonName = lessonName;
    this.video_url = video_url;
    this.lengthSeconds = lengthSeconds;
    this.position = position;
-   this.videokey = videokey;
    this.course = course;
    }
 
