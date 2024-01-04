@@ -9,6 +9,9 @@ import com.java.udemy.repository.EnrollmentRepository;
 import com.java.udemy.repository.UserRepository;
 import com.java.udemy.request.EnrollmentRequest;
 
+import com.java.udemy.response.GenericResponse;
+import com.java.udemy.response.GetEnrollments;
+import com.java.udemy.service.concretions.EnrollmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +30,26 @@ public class EnrollmentController {
 
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private EnrollmentsService enrollmentsService;
 
     @PostMapping("/enroll")
-    public ResponseEntity<String> enrollUserToCourse(@RequestBody EnrollmentRequest enrollmentRequest) {
+    public ResponseEntity<GenericResponse> enrollUserToCourse(@RequestBody EnrollmentRequest enrollmentRequest) {
         String userEmail = enrollmentRequest.getUserEmail();
         Integer courseId = enrollmentRequest.getCourseId();
+
 
         User user = userRepository.findByEmail(userEmail).orElse(null);
         Course course = courseRepository.findById(courseId).orElse(null);
 
         if (user != null && course != null) {
+            GenericResponse response = new GenericResponse("SAVED", true);
             Enrollment enrollment = new Enrollment(user, course);
             enrollmentRepository.save(enrollment);
-            return ResponseEntity.ok("Enrollment saved successfully");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.badRequest().body("User or Course not found");
+            GenericResponse response = new GenericResponse("FAIL", false);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
@@ -52,13 +60,14 @@ public class EnrollmentController {
     }
 
     @GetMapping("/{enrollmentId}")
-    public ResponseEntity<Enrollment> getEnrollmentById(@PathVariable Integer enrollmentId) {
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+    public ResponseEntity<GetEnrollments> getEnrollmentById(@PathVariable Integer enrollmentId) {
+        GetEnrollments enrollment = enrollmentsService.getCourse_idFromEnroll(enrollmentId);
         if (enrollment != null) {
             return ResponseEntity.ok(enrollment);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
 

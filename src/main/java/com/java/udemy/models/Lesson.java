@@ -37,7 +37,7 @@ public class Lesson {
    private Integer lengthSeconds;
 
   @NotNull
-  @Column(nullable = false)
+  @Column(nullable = false,  unique = true)
   private Integer position;
 
   @NotNull

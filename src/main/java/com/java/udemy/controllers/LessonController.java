@@ -1,6 +1,7 @@
 package com.java.udemy.controllers;
 
 import com.java.udemy.response.GetAllMyLessonsInEnrollmentResponse;
+import com.java.udemy.response.GetLessonByPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/lessons", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +40,18 @@ public class LessonController {
             Slice<Lesson> lessons = lessonService.getLessonsByCourseId(id, page);
             GetLessonsByCourseIdResponse response = new GetLessonsByCourseIdResponse();
             response.setGetLessonsByCourseId(lessons);
+            response.setNumberOfItems(lessonService.GetNumberOfItems(id));
+            return response;
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
+
+    }
+    @GetMapping(path = "detail/{position}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetLessonByPosition getLessonsByPosition(@PathVariable @NotNull Integer position, @RequestParam(required = true) Integer id_course) {
+        try {
+            GetLessonByPosition response = lessonService.getLessonByPosition( id_course, position);
             return response;
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage());

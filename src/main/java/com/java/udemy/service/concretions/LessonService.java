@@ -1,7 +1,9 @@
 package com.java.udemy.service.concretions;
 
+import java.util.Optional;
 import java.util.Set;
 
+import com.java.udemy.response.GetLessonByPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -61,6 +63,19 @@ public class LessonService implements ILessonService {
         user);
     Lesson lessons = lessonRepository.save(lesson);
     return lessons;
+  }
+
+  @Override
+  public GetLessonByPosition getLessonByPosition(Integer id_course, Integer position) {
+    Optional<Lesson> lesson = lessonRepository.findByCourseIdAndPosition(id_course, position);
+    System.out.println(lesson);
+    GetLessonByPosition response = new GetLessonByPosition(lesson.get().getId(),lesson.get().getLessonName(), lesson.get().getPosition(), lesson.get().getVideo_url());
+    return response;
+  }
+
+  @Override
+  public long GetNumberOfItems(Integer id_course) {
+    return  lessonRepository.countByCourseId(id_course);
   }
 
   @Override

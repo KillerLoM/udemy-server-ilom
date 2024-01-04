@@ -46,4 +46,5 @@ public interface LessonRepository extends CrudRepository<Lesson, Integer> {
         var lessonList = getAllNotWatchedByEnrollmentId(enrollmentId, courseId, PageRequest.ofSize(1));
         return lessonList.isEmpty() ? Optional.empty() : Optional.of(lessonList.get(0));
     }
+
 }
