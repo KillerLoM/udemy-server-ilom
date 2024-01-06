@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,6 +36,7 @@ public class Enrollment {
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JsonBackReference
   @JoinColumn(name = "user_id")
+
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
@@ -70,6 +72,12 @@ public class Enrollment {
     this.course = course;
   }
 
+  public int getCourse_id() {
+    return course != null ? course.getId() : null;
+  }
+
+
+
   public BigDecimal getProgress() {
     return progress.setScale(0, RoundingMode.HALF_UP);
   }
@@ -87,5 +95,9 @@ public class Enrollment {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+  @PreUpdate
+  public void preUpdate() {
+    this.updatedAt = Instant.now();
   }
 }

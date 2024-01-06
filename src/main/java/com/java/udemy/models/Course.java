@@ -100,6 +100,10 @@ public class Course implements Serializable {
     this.thumbUrl = thumbUrl;
     this.price = price;
   }
+  public int  getUser_id(){
+    return user.getId();
+  }
+  public String getName_user(){ return user.getFullname();}
   // public Course(@NotBlank String title, String subtitle, User user, @NotBlank
   // @Size(max = 50) String category,
   // BigDecimal rating, @NotBlank @URL String thumbUrl, @NotNull @Min(1)
@@ -108,6 +112,7 @@ public class Course implements Serializable {
   // this.subtitle = subtitle;
   // this.user = user;
   // this.category = category;
+
   // this.rating = rating;
   // this.thumbUrl = thumbUrl;
   // this.price = price;

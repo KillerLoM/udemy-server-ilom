@@ -20,7 +20,7 @@ server:
     session:
       cookie:
         http-only: true
-        max-age: 10800s #3hours
+        max-age: 86400000s #3hours
         name: WD_SESSION
     encoding:
       charset: UTF-8

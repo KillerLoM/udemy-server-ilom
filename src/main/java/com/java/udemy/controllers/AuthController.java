@@ -170,7 +170,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
+    public ResponseEntity<GenericResponse> forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
         try {
             String email = forgotPasswordRequest.getEmail();
 
@@ -184,8 +184,8 @@ public class AuthController {
 
             user.setPassword(passwordEncoder.encode(resetPass));
             userRepository.save(user);
-
-            return ResponseEntity.ok().body("Password reset link sent successfully");
+            GenericResponse response = new GenericResponse("OK", true);
+            return ResponseEntity.ok().body(response);
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage());
         }

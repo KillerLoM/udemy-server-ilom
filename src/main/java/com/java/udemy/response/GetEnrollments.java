@@ -13,7 +13,6 @@ public class GetEnrollments {
     private int id;
     private boolean isCompleted;
     private BigDecimal progress;
-    private Instant createdAt;
-    private Instant updatedAt;
     private int course_id;
+    private int nextPosition;
 }

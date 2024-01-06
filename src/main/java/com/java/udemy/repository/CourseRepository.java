@@ -23,7 +23,7 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
     List<Course> getTop6CoursesByIsFeatured(boolean isFeatured);
     List<Course> getCoursesByUserId(@Param("user_id") int id);
     Slice<Course> getCoursesByTitleContaining(@Param("title") String title, Pageable pageable);
-
+    Course getCourseById(int id);
 
     @Query(value = "SELECT new com.java.udemy.request.CategoryRequest(MAX(c.id), c.category) FROM Course c GROUP BY c.category")
     List<CategoryRequest> getAllDistinctCategories();
